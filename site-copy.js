@@ -26,6 +26,7 @@ const graph = function() {
 function dfsTopSortHelper(v, n, visited, topNums) {
     visited[v] = true;
     const neighbors = graph.adjacencyList[v];
+    console.log(neighbors);
     for (const neighbor of neighbors) {
         if (!visited[neighbor]) {
             n = dfsTopSortHelper(neighbor, n, visited, topNums);
