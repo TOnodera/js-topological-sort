@@ -19,7 +19,7 @@ function tsort_Kahn(lists){
 
     //入次数を確認
     for(const list of lists){
-        let num = list.parentId.length;
+        const num = list.parentId.length;
         inDeg.set(list.id,num);
     }
 
@@ -35,23 +35,32 @@ function tsort_Kahn(lists){
     //ソートして返す
     const ans = [];
     while(stack.length > 0){
-        node = stack.pop();
-        ans.push(node);
-        for(const list of lists){
-            for(const id of list.parentId){
-                const num = inDeg.get(id);
-                inDeg.set(id,num-1);
-                if(inDeg.get(id) === 0){
-                    stack.push(id);
+        parentId = stack.pop();
+        ans.push(parentId);
+        lists.forEach((list)=>{
+            if(list.parentId.includes(parentId)){
+                const num = inDeg.get(list.id);
+                inDeg.set(list.id,num-1);
+                if(inDeg.get(list.id) === 0){
+                    stack.push(list.id);
                 }
             }
-        }
+        });
     }
 
-    return ans.reverse();
+    return ans;
     
 }
 
+/**             
+ *              -> 4
+ * 1 -> 2 -> 3        -> 6 -> 7
+ *              -> 5
+ * ------------------------------------------
+ *  [
+ *      1, 2, 3, 5, 4, 6, 7 <- OK
+ *  ]
+ */
 lists = [
     {"id": 1,"parentId": []},
     {"id": 2,"parentId": [1]},
