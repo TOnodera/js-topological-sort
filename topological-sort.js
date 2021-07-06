@@ -35,7 +35,20 @@ function tsort_Kahn(lists){
         }
     }
 
-    console.log(stack);
+    const ans = [];
+    while(stack.length > 0){
+        node = stack.pop();
+        ans.push(node);
+        for(const list of lists){
+            const num = inDeg.get(list[1]);
+            inDeg.set(list[1],num-1);
+            if(inDeg.get(list[1]) === 0){
+                stack.push(list[1]);
+            }
+        }
+    }
+
+    return ans.reverse();
     
 }
 
@@ -48,5 +61,5 @@ lists = [
     ['F','D']
 ];
 
-tsort_Kahn(lists);
+console.log(tsort_Kahn(lists));
 
