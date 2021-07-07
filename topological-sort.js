@@ -59,16 +59,17 @@ function tsort_Kahn(lists){
  * ------------------------------------------
  *  [
  *      1, 2, 3, 5, 4, 6, 7 <- OK
+ *      1, 2, 3, 4, 5, 6, 7 <- OK
  *  ]
  */
 lists = [
-    {"id": 1,"parentId": []},
-    {"id": 2,"parentId": [1]},
-    {"id": 3,"parentId": [2]},
     {"id": 4,"parentId":[3]},
     {"id": 5,"parentId": [3]},
     {"id": 6,"parentId": [4,5]}, //merge
-    {"id": 7,"parentId": [6]}
+    {"id": 7,"parentId": [6]},
+    {"id": 3,"parentId": [2]},
+    {"id": 1,"parentId": []},
+    {"id": 2,"parentId": [1]},
 ]; 
 
 console.log(tsort_Kahn(lists));
