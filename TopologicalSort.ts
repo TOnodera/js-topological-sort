@@ -38,3 +38,5 @@ class TopologicalSort{
         return ans;
     }
 }
+
+export default TopologicalSort;
