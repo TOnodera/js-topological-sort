@@ -6,18 +6,31 @@ class TopologicalSort{
 
         //入次数を確認
         for(const list of lists){
-            const num = list.parentId.length;
-            this.inDeg.set(list.id,num);
+            const num = list.parents.length;
+            this.inDeg.set(list.hash,num);
+        }
+
+        //与えられたグラフ内に親がいない場合は-1
+        const parentHashes: any[] = [];
+        for(const list of lists){
+            list.parents.forEach((parentHash: string)=>{
+                parentHashes.push(parentHash);
+            });
+        }
+        for(const list of lists){
+            if(parentHashes.includes(list.hash) === false){
+                const num = this.inDeg.get(list.hash);
+                this.inDeg.set(list.hash,num-1);
+            }
         }
 
         //入次数０のノードを計算
         for(const list of lists){
-            for(const id of list.parentId){
-                if(this.inDeg.get(id) == 0){
-                    this.stack.push(id);
-                }
+            if(this.inDeg.get(list.hash) == 0){
+                this.stack.push(list.hash);
             }
         }
+
 
         //ソートして返す
         const ans = [];
@@ -25,11 +38,12 @@ class TopologicalSort{
             const parentId = this.stack.pop();
             ans.push(parentId);
             lists.forEach((list)=>{
-                if(list.parentId.includes(parentId)){
-                    const num = this.inDeg.get(list.id);
-                    this.inDeg.set(list.id,num-1);
-                    if(this.inDeg.get(list.id) === 0){
-                        this.stack.push(list.id);
+                console.log(parentId,list.parents);
+                if(list.parents.includes(parentId)){
+                    const num = this.inDeg.get(list.hash);
+                    this.inDeg.set(list.hash,num-1);
+                    if(this.inDeg.get(list.hash) === 0){
+                        this.stack.push(list.hash);
                     }
                 }
             });
